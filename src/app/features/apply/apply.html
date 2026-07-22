@@ -238,10 +238,10 @@
                     <div>
                       <p class="upload-title">Resume Upload</p>
                       <p class="upload-hint">PDF or Word document, max 5 MB</p>
-                      @if (selectedFileName) {
+                      @if (selectedFileName()) {
                         <p class="upload-filename">
                           <mat-icon>attach_file</mat-icon>
-                          {{ selectedFileName }}
+                          {{ selectedFileName() }}
                         </p>
                       }
                     </div>

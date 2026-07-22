@@ -1,11 +1,4 @@
-export interface JobSearchTarget {
-  title: string;
-  company: string;
-  skills: string[];
-  location: string;
-  salaryLabel: string;
-  salary: number;
-}
+import type { JobSearchTarget } from '../../core/models/job.model';
 
 const LOCATION_ALIASES: Record<string, string[]> = {
   bangalore: ['bangalore', 'banglore', 'bengaluru', 'blr'],

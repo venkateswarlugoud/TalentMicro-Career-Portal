@@ -89,7 +89,7 @@
         </p>
       </div>
       <div class="row g-4">
-        @for (category of categories; track category.name) {
+        @for (category of categories(); track category.name) {
           <div class="col-sm-6 col-lg-4">
             <a routerLink="/jobs" class="category-card">
               <div class="category-icon-wrap">
@@ -122,7 +122,7 @@
         <a routerLink="/jobs" class="btn btn-outline-primary">View All Jobs</a>
       </div>
       <div class="row g-4 mt-1">
-        @for (job of featuredJobs; track job.id) {
+        @for (job of featuredJobs(); track job.id) {
           <div class="col-md-6 col-xl-4">
             <article class="job-card h-100">
               <div class="job-card-header">
@@ -166,7 +166,7 @@
         </p>
       </div>
       <div class="row g-4">
-        @for (feature of features; track feature.title) {
+        @for (feature of features(); track feature.title) {
           <div class="col-sm-6 col-lg-3">
             <div class="feature-card h-100 text-center">
               <div class="feature-icon-wrap">
