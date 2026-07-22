@@ -1,0 +1,55 @@
+<header class="app-header">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+    <div class="container">
+      <a
+        class="navbar-brand d-flex align-items-center gap-2"
+        routerLink="/"
+        (click)="closeNav()"
+      >
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">Career Portal</span>
+      </a>
+
+      <button
+        class="navbar-toggler border-0 shadow-none"
+        type="button"
+        aria-controls="mainNavbar"
+        [attr.aria-expanded]="!isNavCollapsed()"
+        aria-label="Toggle navigation"
+        (click)="toggleNav()"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div
+        class="collapse navbar-collapse"
+        id="mainNavbar"
+        [class.show]="!isNavCollapsed()"
+      >
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+          <li class="nav-item">
+            <a
+              class="nav-link px-3"
+              routerLink="/"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="closeNav()"
+            >
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link px-3"
+              routerLink="/jobs"
+              routerLinkActive="active"
+              (click)="closeNav()"
+            >
+              Jobs
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
