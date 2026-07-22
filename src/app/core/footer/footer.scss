@@ -5,38 +5,61 @@
 
 .footer-brand {
   color: var(--portal-text);
+  transition: color var(--portal-transition-fast);
 
   &:hover {
     color: var(--portal-primary);
   }
+
+  &:focus-visible {
+    border-radius: var(--portal-radius-sm);
+  }
 }
 
 .brand-mark {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 0.375rem;
-  background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--portal-radius-sm);
+  background: var(--portal-gradient);
   flex-shrink: 0;
 }
 
 .brand-text {
   font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
 .footer-heading {
   color: var(--portal-muted);
-  letter-spacing: 0.06em;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
 }
 
 .footer-link {
   color: var(--portal-muted);
   font-size: 0.9375rem;
+  font-weight: 500;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition:
+    color var(--portal-transition-fast),
+    transform var(--portal-transition-fast);
 
   &:hover {
     color: var(--portal-primary);
+  }
+
+  &:focus-visible {
+    border-radius: var(--portal-radius-sm);
+  }
+}
+
+@media (max-width: 991.98px) {
+  .app-footer .container {
+    text-align: center;
+  }
+
+  .footer-links {
+    justify-content: center !important;
   }
 }

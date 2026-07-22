@@ -15,9 +15,23 @@
 
 // Header
 .job-header {
-  background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+  background: var(--portal-gradient);
   color: #fff;
-  padding: 2rem 0 2.5rem;
+  padding: clamp(1.75rem, 4vw, 2.5rem) 0 clamp(2rem, 4vw, 3rem);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 90% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 45%);
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+  }
 }
 
 .back-link {
@@ -29,7 +43,10 @@
   font-size: 0.9375rem;
   font-weight: 500;
   margin-bottom: 1.5rem;
-  transition: color 0.2s ease;
+  border-radius: var(--portal-radius-sm);
+  transition:
+    color var(--portal-transition-fast),
+    transform var(--portal-transition-fast);
 
   mat-icon {
     font-size: 1.25rem;
@@ -39,15 +56,17 @@
 
   &:hover {
     color: #fff;
+    transform: translateX(-2px);
   }
 }
 
 .job-header-card {
   background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--portal-radius-lg);
   padding: 1.75rem;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .company-brand {
@@ -64,7 +83,7 @@
   justify-content: center;
   width: 4rem;
   height: 4rem;
-  border-radius: 0.875rem;
+  border-radius: var(--portal-radius-md);
   color: #fff;
   font-size: 1.125rem;
   font-weight: 700;
@@ -72,10 +91,10 @@
 }
 
 .company-name {
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   opacity: 0.85;
   margin: 0 0 0.25rem;
 }
@@ -83,7 +102,7 @@
 .job-title {
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   margin: 0;
   line-height: 1.25;
 }
@@ -111,14 +130,25 @@
 
 .apply-header-btn {
   padding-inline: 2rem;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition:
+    transform var(--portal-transition-fast),
+    box-shadow var(--portal-transition-fast);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
 }
 
 // Main content
 .content-card {
   background: var(--detail-surface);
   border: 1px solid var(--detail-border);
-  border-radius: 1rem;
-  padding: 2rem;
+  border-radius: var(--portal-radius-lg);
+  padding: clamp(1.5rem, 3vw, 2rem);
+  box-shadow: 0 1px 3px var(--portal-shadow);
 }
 
 .content-section {
@@ -176,7 +206,7 @@
         font-size: 1.25rem;
         width: 1.25rem;
         height: 1.25rem;
-        color: #198754;
+        color: var(--portal-success);
         margin-top: 0.125rem;
       }
     }
@@ -193,23 +223,25 @@
   font-size: 0.8125rem;
   font-weight: 500;
   padding: 0.375rem 0.875rem;
-  border-radius: 2rem;
-  background: rgba(13, 110, 253, 0.08);
+  border-radius: var(--portal-radius-pill);
+  background: rgba(var(--portal-primary-rgb), 0.08);
   color: var(--detail-primary);
+  border: 1px solid rgba(var(--portal-primary-rgb), 0.12);
 }
 
 // Sidebar
 .sidebar-sticky {
   position: sticky;
-  top: 1rem;
+  top: 5.5rem;
 }
 
 .summary-card,
 .share-card {
   background: var(--detail-surface);
   border: 1px solid var(--detail-border);
-  border-radius: 1rem;
+  border-radius: var(--portal-radius-lg);
   padding: 1.5rem;
+  box-shadow: 0 1px 3px var(--portal-shadow);
 }
 
 .summary-card {
@@ -233,6 +265,7 @@
     gap: 0.75rem;
     padding: 0.75rem 0;
     border-bottom: 1px solid var(--detail-border);
+    transition: background-color var(--portal-transition-fast);
 
     &:last-child {
       border-bottom: none;
@@ -252,10 +285,10 @@
 
 .summary-label {
   display: block;
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 0.6875rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   color: var(--detail-muted);
   margin-bottom: 0.125rem;
 }
@@ -271,6 +304,7 @@
   font-size: 0.875rem;
   color: var(--detail-muted);
   margin-bottom: 1rem;
+  line-height: 1.55;
 }
 
 .share-actions {
@@ -282,6 +316,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
+    font-weight: 600;
 
     mat-icon {
       font-size: 1.125rem;
@@ -295,7 +330,7 @@
 .related-section {
   background: var(--detail-surface);
   border-top: 1px solid var(--detail-border);
-  padding: 3.5rem 0 4rem;
+  padding: clamp(2.5rem, 5vw, 4rem) 0;
 }
 
 .related-title {
@@ -309,20 +344,31 @@
   font-size: 1rem;
   color: var(--detail-muted);
   margin-bottom: 2rem;
+  line-height: 1.6;
 }
 
 .related-card {
   background: var(--detail-bg);
   border: 1px solid var(--detail-border);
-  border-radius: 1rem;
+  border-radius: var(--portal-radius-lg);
   padding: 1.5rem;
+  box-shadow: 0 1px 3px var(--portal-shadow);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform var(--portal-transition-fast),
+    box-shadow var(--portal-transition-fast),
+    border-color var(--portal-transition-fast);
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px var(--portal-shadow);
+    box-shadow: 0 8px 24px var(--portal-shadow-md);
+    border-color: rgba(var(--portal-primary-rgb), 0.2);
+  }
+
+  .btn {
+    margin-top: auto;
   }
 }
 
@@ -336,7 +382,7 @@
     width: 2.75rem;
     height: 2.75rem;
     font-size: 0.8125rem;
-    border-radius: 0.625rem;
+    border-radius: var(--portal-radius-sm);
     box-shadow: none;
   }
 }

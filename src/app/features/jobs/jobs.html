@@ -109,7 +109,7 @@
       </aside>
 
       <!-- Main Content -->
-      <div class="col-lg-9">
+      <div class="col-lg-9" id="jobs-results">
         <!-- Top Bar -->
         <div class="top-bar">
           <div class="jobs-count">
@@ -232,37 +232,57 @@
 
           <!-- Pagination -->
           @if (totalPages() > 1) {
-            <nav class="pagination-nav" aria-label="Jobs pagination">
-              <ul class="pagination justify-content-center mb-0">
-                <li class="page-item" [class.disabled]="currentPage() === 1">
-                  <button
-                    type="button"
-                    class="page-link"
-                    (click)="goToPage(currentPage() - 1)"
-                    [disabled]="currentPage() === 1"
-                  >
-                    Previous
-                  </button>
-                </li>
-                @for (page of pageNumbers(); track page) {
-                  <li class="page-item" [class.active]="currentPage() === page">
-                    <button type="button" class="page-link" (click)="goToPage(page)">
-                      {{ page }}
+            <div class="pagination-footer">
+              <p class="pagination-info">
+                Showing {{ paginationRange().start }}–{{ paginationRange().end }} of
+                {{ paginationRange().total }} jobs
+              </p>
+              <nav class="pagination-nav" aria-label="Jobs pagination">
+                <ul class="pagination justify-content-center mb-0">
+                  <li class="page-item" [class.disabled]="currentPage() === 1">
+                    <button
+                      type="button"
+                      class="page-link"
+                      (click)="goToPage(currentPage() - 1)"
+                      [disabled]="currentPage() === 1"
+                      aria-label="Previous page"
+                    >
+                      Previous
                     </button>
                   </li>
-                }
-                <li class="page-item" [class.disabled]="currentPage() === totalPages()">
-                  <button
-                    type="button"
-                    class="page-link"
-                    (click)="goToPage(currentPage() + 1)"
-                    [disabled]="currentPage() === totalPages()"
-                  >
-                    Next
-                  </button>
-                </li>
-              </ul>
-            </nav>
+                  @for (page of visiblePageNumbers(); track page) {
+                    @if (isEllipsis(page)) {
+                      <li class="page-item ellipsis disabled">
+                        <span class="page-link" aria-hidden="true">…</span>
+                      </li>
+                    } @else {
+                      <li class="page-item" [class.active]="currentPage() === page">
+                        <button
+                          type="button"
+                          class="page-link"
+                          (click)="goToPage(page)"
+                          [attr.aria-current]="currentPage() === page ? 'page' : null"
+                          [attr.aria-label]="'Page ' + page"
+                        >
+                          {{ page }}
+                        </button>
+                      </li>
+                    }
+                  }
+                  <li class="page-item" [class.disabled]="currentPage() === totalPages()">
+                    <button
+                      type="button"
+                      class="page-link"
+                      (click)="goToPage(currentPage() + 1)"
+                      [disabled]="currentPage() === totalPages()"
+                      aria-label="Next page"
+                    >
+                      Next
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
           }
         } @else {
           <div class="empty-state text-center">
