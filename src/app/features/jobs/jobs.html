@@ -1,1 +1,280 @@
-<p>jobs works!</p>
+<div class="jobs-page">
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">Browse Jobs</h1>
+      <p class="page-subtitle">Find the perfect role that matches your skills and ambitions.</p>
+    </div>
+  </div>
+
+  <div class="container py-4 py-lg-5">
+    <div class="row g-4">
+      <!-- Sidebar Filters -->
+      <aside class="col-lg-3">
+        <div class="filters-card sticky-lg-top">
+          <div class="filters-header">
+            <h2 class="filters-title">
+              <mat-icon>tune</mat-icon>
+              Filters
+            </h2>
+          </div>
+
+          <form class="filters-form" (submit)="$event.preventDefault(); applyFilters()">
+            <div class="filter-group">
+              <label class="form-label fw-semibold" for="filterKeyword">Search Job</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <mat-icon class="field-icon">search</mat-icon>
+                </span>
+                <input
+                  id="filterKeyword"
+                  type="text"
+                  class="form-control"
+                  placeholder="Job title or keyword"
+                  [(ngModel)]="filterForm.keyword"
+                  name="keyword"
+                />
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label class="form-label fw-semibold" for="filterLocation">Location</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <mat-icon class="field-icon">location_on</mat-icon>
+                </span>
+                <input
+                  id="filterLocation"
+                  type="text"
+                  class="form-control"
+                  placeholder="City or remote"
+                  [(ngModel)]="filterForm.location"
+                  name="location"
+                />
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <label class="form-label fw-semibold" for="filterType">Employment Type</label>
+              <select
+                id="filterType"
+                class="form-select"
+                [(ngModel)]="filterForm.employmentType"
+                name="employmentType"
+              >
+                <option value="">All Types</option>
+                @for (type of employmentTypes; track type) {
+                  <option [value]="type">{{ type }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label class="form-label fw-semibold" for="filterExperience">Experience Level</label>
+              <select
+                id="filterExperience"
+                class="form-select"
+                [(ngModel)]="filterForm.experienceLevel"
+                name="experienceLevel"
+              >
+                <option value="">All Levels</option>
+                @for (level of experienceLevels; track level) {
+                  <option [value]="level">{{ level }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label class="form-label fw-semibold" for="filterSalary">Salary Range</label>
+              <select
+                id="filterSalary"
+                class="form-select"
+                [(ngModel)]="filterForm.salaryRange"
+                name="salaryRange"
+              >
+                <option value="">Any Salary</option>
+                @for (range of salaryRanges; track range.value) {
+                  <option [value]="range.value">{{ range.label }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="filters-actions d-grid gap-2">
+              <button type="submit" class="btn btn-primary">Apply Filters</button>
+              <button type="button" class="btn btn-outline-secondary" (click)="clearFilters()">
+                Clear Filters
+              </button>
+            </div>
+          </form>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="col-lg-9">
+        <!-- Top Bar -->
+        <div class="top-bar">
+          <div class="jobs-count">
+            <span class="count-number">{{ filteredJobs().length }}</span>
+            Jobs Found
+          </div>
+
+          <div class="top-bar-controls">
+            <div class="sort-control">
+              <label class="visually-hidden" for="sortBy">Sort By</label>
+              <select
+                id="sortBy"
+                class="form-select form-select-sm"
+                [ngModel]="sortBy()"
+                (ngModelChange)="onSortChange($event)"
+                name="sortBy"
+              >
+                @for (option of sortOptions; track option.value) {
+                  <option [value]="option.value">{{ option.label }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="view-toggle btn-group" role="group" aria-label="View mode">
+              <button
+                type="button"
+                class="btn btn-sm"
+                [class.btn-primary]="viewMode() === 'grid'"
+                [class.btn-outline-secondary]="viewMode() !== 'grid'"
+                (click)="setViewMode('grid')"
+                aria-label="Grid view"
+              >
+                <mat-icon>grid_view</mat-icon>
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm"
+                [class.btn-primary]="viewMode() === 'list'"
+                [class.btn-outline-secondary]="viewMode() !== 'list'"
+                (click)="setViewMode('list')"
+                aria-label="List view"
+              >
+                <mat-icon>view_list</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Job Cards -->
+        @if (paginatedJobs().length > 0) {
+          <div
+            class="jobs-list"
+            [class.jobs-list--grid]="viewMode() === 'grid'"
+            [class.jobs-list--list]="viewMode() === 'list'"
+          >
+            @for (job of paginatedJobs(); track job.id) {
+              <article class="job-card">
+                <div class="job-card-main">
+                  <div class="job-card-top">
+                    <div class="company-brand">
+                      <div class="company-logo" [style.background-color]="job.logoColor">
+                        {{ job.logoInitials }}
+                      </div>
+                      <div>
+                        <p class="company-name">{{ job.company }}</p>
+                        <h3 class="job-title">{{ job.title }}</h3>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      class="save-btn"
+                      [class.save-btn--active]="isJobSaved(job.id)"
+                      (click)="toggleSaveJob(job.id)"
+                      [attr.aria-label]="isJobSaved(job.id) ? 'Unsave job' : 'Save job'"
+                    >
+                      <mat-icon>{{ isJobSaved(job.id) ? 'bookmark' : 'bookmark_border' }}</mat-icon>
+                    </button>
+                  </div>
+
+                  <ul class="job-meta list-unstyled">
+                    <li>
+                      <mat-icon>location_on</mat-icon>
+                      {{ job.location }}
+                    </li>
+                    <li>
+                      <mat-icon>work_history</mat-icon>
+                      {{ job.experience }}
+                    </li>
+                    <li>
+                      <mat-icon>payments</mat-icon>
+                      {{ job.salaryLabel }}
+                    </li>
+                    <li>
+                      <mat-icon>schedule</mat-icon>
+                      {{ job.type }}
+                    </li>
+                  </ul>
+
+                  <div class="skills-tags">
+                    @for (skill of job.skills; track skill) {
+                      <span class="skill-tag">{{ skill }}</span>
+                    }
+                  </div>
+
+                  <p class="posted-date">
+                    <mat-icon>calendar_today</mat-icon>
+                    Posted {{ job.postedDate }}
+                  </p>
+                </div>
+
+                <div class="job-card-actions">
+                  <a [routerLink]="['/jobs', job.id]" class="btn btn-outline-primary">
+                    View Details
+                  </a>
+                  <a [routerLink]="['/apply', job.id]" class="btn btn-primary">Apply Now</a>
+                </div>
+              </article>
+            }
+          </div>
+
+          <!-- Pagination -->
+          @if (totalPages() > 1) {
+            <nav class="pagination-nav" aria-label="Jobs pagination">
+              <ul class="pagination justify-content-center mb-0">
+                <li class="page-item" [class.disabled]="currentPage() === 1">
+                  <button
+                    type="button"
+                    class="page-link"
+                    (click)="goToPage(currentPage() - 1)"
+                    [disabled]="currentPage() === 1"
+                  >
+                    Previous
+                  </button>
+                </li>
+                @for (page of pageNumbers(); track page) {
+                  <li class="page-item" [class.active]="currentPage() === page">
+                    <button type="button" class="page-link" (click)="goToPage(page)">
+                      {{ page }}
+                    </button>
+                  </li>
+                }
+                <li class="page-item" [class.disabled]="currentPage() === totalPages()">
+                  <button
+                    type="button"
+                    class="page-link"
+                    (click)="goToPage(currentPage() + 1)"
+                    [disabled]="currentPage() === totalPages()"
+                  >
+                    Next
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          }
+        } @else {
+          <div class="empty-state text-center">
+            <mat-icon class="empty-icon">search_off</mat-icon>
+            <h3>No jobs found</h3>
+            <p class="text-muted">Try adjusting your filters to see more results.</p>
+            <button type="button" class="btn btn-primary" (click)="clearFilters()">
+              Clear Filters
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

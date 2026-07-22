@@ -1,0 +1,142 @@
+:host {
+  display: block;
+}
+
+.not-found-page {
+  --nf-primary: #0d6efd;
+  --nf-accent: #6610f2;
+  --nf-text: #1a1a2e;
+  --nf-muted: #6c757d;
+  --nf-surface: #ffffff;
+  --nf-border: #e9ecef;
+  --nf-bg: #f8f9fa;
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - 8rem);
+  padding: 3rem 0 4rem;
+  background:
+    linear-gradient(135deg, rgba(13, 110, 253, 0.06) 0%, rgba(102, 16, 242, 0.06) 100%),
+    var(--nf-bg);
+}
+
+.not-found-card {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  background: var(--nf-surface);
+  border: 1px solid var(--nf-border);
+  border-radius: 1.25rem;
+  padding: 2.5rem 2rem 3rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.error-code {
+  font-size: clamp(5rem, 18vw, 9rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin: 0 0 0.5rem;
+  background: linear-gradient(135deg, var(--nf-primary) 0%, var(--nf-accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  user-select: none;
+}
+
+.error-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin-bottom: 1.25rem;
+  border-radius: 50%;
+  background: rgba(13, 110, 253, 0.1);
+}
+
+.error-icon {
+  font-size: 2.25rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--nf-primary);
+}
+
+.error-heading {
+  font-size: clamp(1.375rem, 3vw, 1.875rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--nf-text);
+  margin: 0 0 0.875rem;
+  line-height: 1.3;
+}
+
+.error-message {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--nf-muted);
+  max-width: 34rem;
+  margin: 0 auto 2rem;
+}
+
+.error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.875rem;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 11rem;
+  font-weight: 600;
+  border-radius: 0.625rem;
+  padding: 0.75rem 1.5rem;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  mat-icon {
+    font-size: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+  }
+}
+
+.btn-outline-primary.action-btn:hover {
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
+}
+
+@media (max-width: 575.98px) {
+  .not-found-page {
+    padding: 2rem 0 3rem;
+    min-height: calc(100vh - 6rem);
+  }
+
+  .not-found-card {
+    padding: 2rem 1.25rem 2.5rem;
+  }
+
+  .error-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .action-btn {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .not-found-card {
+    padding: 3rem 2.5rem 3.5rem;
+  }
+}

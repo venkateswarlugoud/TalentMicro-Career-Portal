@@ -1,1 +1,220 @@
-<p>job-details works!</p>
+<div class="job-details-page">
+  <!-- Top Section -->
+  <section class="job-header">
+    <div class="container">
+      <a routerLink="/jobs" class="back-link">
+        <mat-icon>arrow_back</mat-icon>
+        Back to Jobs
+      </a>
+
+      <div class="job-header-card">
+        <div class="job-header-main">
+          <div class="company-brand">
+            <div class="company-logo" [style.background-color]="job().logoColor">
+              {{ job().logoInitials }}
+            </div>
+            <div>
+              <p class="company-name">{{ job().company }}</p>
+              <h1 class="job-title">{{ job().title }}</h1>
+            </div>
+          </div>
+
+          <ul class="job-meta list-unstyled">
+            <li>
+              <mat-icon>location_on</mat-icon>
+              {{ job().location }}
+            </li>
+            <li>
+              <mat-icon>schedule</mat-icon>
+              {{ job().type }}
+            </li>
+            <li>
+              <mat-icon>work_history</mat-icon>
+              {{ job().experience }}
+            </li>
+            <li>
+              <mat-icon>payments</mat-icon>
+              {{ job().salary }}
+            </li>
+            <li>
+              <mat-icon>calendar_today</mat-icon>
+              Posted {{ job().postedDate }}
+            </li>
+          </ul>
+
+          <a [routerLink]="['/apply', job().id]" class="btn btn-primary btn-lg apply-header-btn">
+            Apply Now
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main + Sidebar -->
+  <div class="container py-4 py-lg-5">
+    <div class="row g-4">
+      <!-- Main Content -->
+      <div class="col-lg-8">
+        <article class="content-card">
+          <section class="content-section">
+            <h2 class="section-title">Job Description</h2>
+            <p class="section-text">{{ job().description }}</p>
+          </section>
+
+          <section class="content-section">
+            <h2 class="section-title">Responsibilities</h2>
+            <ul class="content-list">
+              @for (item of job().responsibilities; track item) {
+                <li>{{ item }}</li>
+              }
+            </ul>
+          </section>
+
+          <section class="content-section">
+            <h2 class="section-title">Required Skills</h2>
+            <div class="skills-tags">
+              @for (skill of job().skills; track skill) {
+                <span class="skill-tag">{{ skill }}</span>
+              }
+            </div>
+          </section>
+
+          <section class="content-section">
+            <h2 class="section-title">Qualifications</h2>
+            <ul class="content-list">
+              @for (item of job().qualifications; track item) {
+                <li>{{ item }}</li>
+              }
+            </ul>
+          </section>
+
+          <section class="content-section">
+            <h2 class="section-title">Benefits</h2>
+            <ul class="content-list content-list--benefits">
+              @for (item of job().benefits; track item) {
+                <li>
+                  <mat-icon>check_circle</mat-icon>
+                  {{ item }}
+                </li>
+              }
+            </ul>
+          </section>
+
+          <section class="content-section mb-0">
+            <h2 class="section-title">About Company</h2>
+            <p class="section-text">{{ job().aboutCompany }}</p>
+          </section>
+        </article>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="col-lg-4">
+        <div class="sidebar-sticky">
+          <div class="summary-card">
+            <h3 class="summary-title">Job Summary</h3>
+            <ul class="summary-list list-unstyled">
+              <li>
+                <mat-icon>location_on</mat-icon>
+                <div>
+                  <span class="summary-label">Location</span>
+                  <span class="summary-value">{{ job().location }}</span>
+                </div>
+              </li>
+              <li>
+                <mat-icon>work_history</mat-icon>
+                <div>
+                  <span class="summary-label">Experience</span>
+                  <span class="summary-value">{{ job().experience }}</span>
+                </div>
+              </li>
+              <li>
+                <mat-icon>payments</mat-icon>
+                <div>
+                  <span class="summary-label">Salary</span>
+                  <span class="summary-value">{{ job().salary }}</span>
+                </div>
+              </li>
+              <li>
+                <mat-icon>schedule</mat-icon>
+                <div>
+                  <span class="summary-label">Employment Type</span>
+                  <span class="summary-value">{{ job().type }}</span>
+                </div>
+              </li>
+              <li>
+                <mat-icon>home_work</mat-icon>
+                <div>
+                  <span class="summary-label">Working Mode</span>
+                  <span class="summary-value">{{ job().workingMode }}</span>
+                </div>
+              </li>
+              <li>
+                <mat-icon>groups</mat-icon>
+                <div>
+                  <span class="summary-label">Vacancy Count</span>
+                  <span class="summary-value">{{ job().vacancyCount }} open positions</span>
+                </div>
+              </li>
+            </ul>
+            <a [routerLink]="['/apply', job().id]" class="btn btn-primary w-100">
+              Apply Now
+            </a>
+          </div>
+
+          <div class="share-card">
+            <h3 class="share-title">Share Job</h3>
+            <p class="share-text">Share this opportunity with your network.</p>
+            <div class="share-actions">
+              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="copyJobLink()">
+                <mat-icon>link</mat-icon>
+                Copy Link
+              </button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" aria-label="Share on LinkedIn">
+                <mat-icon>share</mat-icon>
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Related Jobs -->
+  <section class="related-section">
+    <div class="container">
+      <h2 class="related-title">Related Jobs</h2>
+      <p class="related-subtitle">Explore similar opportunities you might be interested in.</p>
+      <div class="row g-4">
+        @for (related of relatedJobs(); track related.id) {
+          <div class="col-md-4">
+            <article class="related-card h-100">
+              <div class="related-card-header">
+                <div class="company-logo" [style.background-color]="related.logoColor">
+                  {{ related.logoInitials }}
+                </div>
+                <div>
+                  <h3 class="related-job-title">{{ related.title }}</h3>
+                  <p class="related-company">{{ related.company }}</p>
+                </div>
+              </div>
+              <ul class="related-meta list-unstyled">
+                <li>
+                  <mat-icon>location_on</mat-icon>
+                  {{ related.location }}
+                </li>
+                <li>
+                  <mat-icon>payments</mat-icon>
+                  {{ related.salary }}
+                </li>
+              </ul>
+              <a [routerLink]="['/jobs', related.id]" class="btn btn-outline-primary w-100">
+                View Details
+              </a>
+            </article>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+</div>

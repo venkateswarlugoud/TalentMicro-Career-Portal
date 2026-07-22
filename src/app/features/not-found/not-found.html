@@ -1,1 +1,33 @@
-<p>not-found works!</p>
+<div class="not-found-page">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10 col-12">
+        <div class="not-found-card">
+          <p class="error-code" aria-hidden="true">404</p>
+
+          <div class="error-icon-wrap" aria-hidden="true">
+            <mat-icon class="error-icon">travel_explore</mat-icon>
+          </div>
+
+          <h1 class="error-heading">Page Not Found</h1>
+
+          <p class="error-message">
+            Oops! The page you are looking for does not exist or may have been moved. Let us help
+            you get back on track.
+          </p>
+
+          <div class="error-actions">
+            <a routerLink="/" class="btn btn-primary btn-lg action-btn">
+              <mat-icon>home</mat-icon>
+              Go Home
+            </a>
+            <a routerLink="/jobs" class="btn btn-outline-primary btn-lg action-btn">
+              <mat-icon>work</mat-icon>
+              Browse Jobs
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
