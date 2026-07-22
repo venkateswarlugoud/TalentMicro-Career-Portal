@@ -26,13 +26,16 @@
   }
 }
 
-.brand-mark {
+.brand-logo {
+  display: block;
   width: 2.25rem;
   height: 2.25rem;
-  border-radius: var(--portal-radius-md);
-  background: var(--portal-gradient);
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(var(--portal-primary-rgb), 0.35);
+  transition: transform var(--portal-transition-fast);
+
+  .navbar-brand:hover & {
+    transform: scale(1.04);
+  }
 }
 
 .brand-text {

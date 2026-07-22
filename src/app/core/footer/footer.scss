@@ -16,12 +16,19 @@
   }
 }
 
-.brand-mark {
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: var(--portal-radius-sm);
-  background: var(--portal-gradient);
+.brand-logo {
+  display: block;
   flex-shrink: 0;
+  transition: transform var(--portal-transition-fast);
+
+  &--footer {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .footer-brand:hover & {
+    transform: scale(1.04);
+  }
 }
 
 .brand-text {
