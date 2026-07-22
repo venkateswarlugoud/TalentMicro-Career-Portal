@@ -203,32 +203,6 @@ Feature-specific pages, each implemented as a standalone component:
 
 ---
 
-## Screenshots
-
-> Add screenshots to a `docs/screenshots/` folder and replace the placeholders below.
-
-### Home Page
-
-![Home Page](./docs/screenshots/home-page.png)
-
-### Jobs Page
-
-![Jobs Page](./docs/screenshots/jobs-page.png)
-
-### Job Details
-
-![Job Details](./docs/screenshots/job-details.png)
-
-### Apply Page
-
-![Apply Page](./docs/screenshots/apply-page.png)
-
-### Dark Mode
-
-![Dark Mode](./docs/screenshots/dark-mode.png)
-
----
-
 ## Assumptions
 
 - Job data is **static mock data** stored locally in `core/data/job.data.ts` — no REST API or database is required.
