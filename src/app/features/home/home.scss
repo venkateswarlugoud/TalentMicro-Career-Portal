@@ -70,18 +70,6 @@
   min-width: 10rem;
 }
 
-.hero-actions .btn-outline-light {
-  border-width: 2px;
-  font-weight: 600;
-
-  &:hover,
-  &:focus-visible {
-    background: rgba(255, 255, 255, 0.14);
-    border-color: #fff;
-    color: #fff;
-  }
-}
-
 .hero-visual {
   display: flex;
   align-items: center;
@@ -444,12 +432,9 @@
 
 // Responsive
 @media (max-width: 767.98px) {
-  .hero-actions {
-    flex-direction: column;
-
-    .btn {
-      width: 100%;
-    }
+  .hero-actions .btn {
+    width: 100%;
+    max-width: 20rem;
   }
 
   .section-header.d-flex {
