@@ -14,7 +14,15 @@
     />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   </head>
-  <body>
+  <body class="theme-light">
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('career-portal-theme');
+          document.body.className = theme === 'dark' ? 'theme-dark' : 'theme-light';
+        } catch (e) {}
+      })();
+    </script>
     <app-root></app-root>
   </body>
 </html>

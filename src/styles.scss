@@ -1,8 +1,4 @@
 // Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
 html {
@@ -19,21 +15,165 @@ html {
   );
 }
 
-body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
+// Portal theme tokens — light (default)
+body.theme-light {
+  --portal-primary: #0d6efd;
+  --portal-primary-hover: #0b5ed7;
+  --portal-accent: #6610f2;
+  --portal-text: #1a1a2e;
+  --portal-muted: #6c757d;
+  --portal-surface: #ffffff;
+  --portal-border: #e9ecef;
+  --portal-bg: #f8f9fa;
+  --portal-bg-alt: #f1f3f5;
+  --portal-input-bg: #f8f9fa;
+  --portal-shadow: rgba(0, 0, 0, 0.08);
+  --portal-shadow-hover: rgba(0, 0, 0, 0.12);
+  --portal-gradient-start: rgba(13, 110, 253, 0.06);
+  --portal-gradient-end: rgba(102, 16, 242, 0.06);
+  --portal-nav-active-bg: rgba(13, 110, 253, 0.08);
+  --portal-error-bg: #fff5f5;
+  --portal-navbar-toggler-filter: none;
+
   color-scheme: light;
+}
 
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
+body.theme-dark {
+  --portal-primary: #6ea8fe;
+  --portal-primary-hover: #8bb9fe;
+  --portal-accent: #a98eda;
+  --portal-text: #e9ecef;
+  --portal-muted: #adb5bd;
+  --portal-surface: #1e2230;
+  --portal-border: #2d3348;
+  --portal-bg: #12151c;
+  --portal-bg-alt: #171b26;
+  --portal-input-bg: #252a3a;
+  --portal-shadow: rgba(0, 0, 0, 0.35);
+  --portal-shadow-hover: rgba(0, 0, 0, 0.5);
+  --portal-gradient-start: rgba(110, 168, 254, 0.1);
+  --portal-gradient-end: rgba(139, 92, 246, 0.1);
+  --portal-nav-active-bg: rgba(110, 168, 254, 0.15);
+  --portal-error-bg: rgba(220, 53, 69, 0.12);
+  --portal-navbar-toggler-filter: invert(1) grayscale(100%) brightness(200%);
+
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--portal-bg);
+  color: var(--portal-text);
   font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
   margin: 0;
   height: 100%;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
-/* You can add global styles to this file, and also import other style files */
+
+// Smooth theme transitions for themed surfaces
+.app-header,
+.app-footer,
+.layout,
+[class*='-page'],
+[class*='-card'],
+.filters-card,
+.search-card,
+.job-card,
+.category-card,
+.feature-card,
+.content-card,
+.summary-card,
+.share-card,
+.form-section,
+.success-card,
+.not-found-card,
+.related-card {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+// Bootstrap dark-mode adaptations
+body.theme-dark {
+  .bg-white {
+    background-color: var(--portal-surface) !important;
+  }
+
+  .bg-light {
+    background-color: var(--portal-bg-alt) !important;
+  }
+
+  .text-muted {
+    color: var(--portal-muted) !important;
+  }
+
+  .border-top,
+  .border-bottom,
+  .border {
+    border-color: var(--portal-border) !important;
+  }
+
+  .form-control,
+  .form-select {
+    background-color: var(--portal-input-bg);
+    border-color: var(--portal-border);
+    color: var(--portal-text);
+
+    &::placeholder {
+      color: var(--portal-muted);
+    }
+
+    &:focus {
+      background-color: var(--portal-input-bg);
+      border-color: var(--portal-primary);
+      color: var(--portal-text);
+      box-shadow: 0 0 0 0.2rem rgba(110, 168, 254, 0.2);
+    }
+  }
+
+  .input-group-text {
+    background-color: var(--portal-input-bg);
+    border-color: var(--portal-border);
+    color: var(--portal-muted);
+  }
+
+  .btn-outline-secondary {
+    color: var(--portal-muted);
+    border-color: var(--portal-border);
+
+    &:hover {
+      background-color: var(--portal-input-bg);
+      border-color: var(--portal-border);
+      color: var(--portal-text);
+    }
+  }
+
+  .btn-outline-primary {
+    color: var(--portal-primary);
+    border-color: var(--portal-primary);
+
+    &:hover {
+      background-color: var(--portal-primary);
+      border-color: var(--portal-primary);
+      color: #12151c;
+    }
+  }
+
+  .navbar-toggler-icon {
+    filter: var(--portal-navbar-toggler-filter);
+  }
+
+  .page-link {
+    background-color: var(--portal-surface);
+    border-color: var(--portal-border);
+    color: var(--portal-primary);
+  }
+
+  .page-item.disabled .page-link {
+    background-color: var(--portal-bg-alt);
+    color: var(--portal-muted);
+  }
+}

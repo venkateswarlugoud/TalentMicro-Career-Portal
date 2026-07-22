@@ -3,12 +3,12 @@
 }
 
 .job-details-page {
-  --detail-primary: #0d6efd;
-  --detail-text: #1a1a2e;
-  --detail-muted: #6c757d;
-  --detail-surface: #ffffff;
-  --detail-border: #e9ecef;
-  --detail-bg: #f8f9fa;
+  --detail-primary: var(--portal-primary);
+  --detail-text: var(--portal-text);
+  --detail-muted: var(--portal-muted);
+  --detail-surface: var(--portal-surface);
+  --detail-border: var(--portal-border);
+  --detail-bg: var(--portal-bg);
   background: var(--detail-bg);
   min-height: 100%;
 }
@@ -322,7 +322,7 @@
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 8px 24px var(--portal-shadow);
   }
 }
 

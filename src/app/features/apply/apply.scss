@@ -3,12 +3,12 @@
 }
 
 .apply-page {
-  --apply-primary: #0d6efd;
-  --apply-text: #1a1a2e;
-  --apply-muted: #6c757d;
-  --apply-surface: #ffffff;
-  --apply-border: #e9ecef;
-  --apply-bg: #f8f9fa;
+  --apply-primary: var(--portal-primary);
+  --apply-text: var(--portal-text);
+  --apply-muted: var(--portal-muted);
+  --apply-surface: var(--portal-surface);
+  --apply-border: var(--portal-border);
+  --apply-bg: var(--portal-bg);
   background: var(--apply-bg);
   min-height: 100%;
 }
@@ -102,7 +102,7 @@
   border: 1px solid var(--apply-border);
   border-radius: 1rem;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px var(--portal-shadow);
 }
 
 .section-header {
@@ -156,7 +156,7 @@ mat-form-field {
 
   &.is-invalid {
     border-color: #dc3545;
-    background: #fff5f5;
+    background: var(--portal-error-bg);
   }
 }
 
@@ -223,7 +223,7 @@ mat-form-field {
   }
 
   &:hover {
-    background: #0b5ed7;
+    background: var(--portal-primary-hover);
   }
 }
 

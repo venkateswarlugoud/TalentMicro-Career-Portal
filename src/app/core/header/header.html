@@ -1,5 +1,5 @@
 <header class="app-header">
-  <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+  <nav class="navbar navbar-expand-lg app-navbar border-bottom">
     <div class="container">
       <a
         class="navbar-brand d-flex align-items-center gap-2"
@@ -10,19 +10,31 @@
         <span class="brand-text">Career Portal</span>
       </a>
 
-      <button
-        class="navbar-toggler border-0 shadow-none"
-        type="button"
-        aria-controls="mainNavbar"
-        [attr.aria-expanded]="!isNavCollapsed()"
-        aria-label="Toggle navigation"
-        (click)="toggleNav()"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <div class="navbar-actions d-flex align-items-center gap-1 order-lg-2">
+        <button
+          mat-icon-button
+          type="button"
+          class="theme-toggle-btn"
+          (click)="toggleTheme()"
+          [attr.aria-label]="isDarkTheme() ? 'Switch to light mode' : 'Switch to dark mode'"
+        >
+          <mat-icon>{{ isDarkTheme() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        </button>
+
+        <button
+          class="navbar-toggler border-0 shadow-none"
+          type="button"
+          aria-controls="mainNavbar"
+          [attr.aria-expanded]="!isNavCollapsed()"
+          aria-label="Toggle navigation"
+          (click)="toggleNav()"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
 
       <div
-        class="collapse navbar-collapse"
+        class="collapse navbar-collapse order-lg-1"
         id="mainNavbar"
         [class.show]="!isNavCollapsed()"
       >

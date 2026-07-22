@@ -3,12 +3,12 @@
 }
 
 .home-page {
-  --home-primary: #0d6efd;
-  --home-primary-dark: #0a58ca;
-  --home-text: #1a1a2e;
-  --home-muted: #6c757d;
-  --home-surface: #ffffff;
-  --home-border: #e9ecef;
+  --home-primary: var(--portal-primary);
+  --home-primary-dark: var(--portal-primary-hover);
+  --home-text: var(--portal-text);
+  --home-muted: var(--portal-muted);
+  --home-surface: var(--portal-surface);
+  --home-border: var(--portal-border);
 }
 
 // Hero
@@ -115,8 +115,8 @@
 }
 
 .input-group-text {
-  background: #f8f9fa;
-  border-color: #dee2e6;
+  background: var(--portal-input-bg);
+  border-color: var(--portal-border);
 }
 
 .btn-icon {
@@ -154,7 +154,7 @@
 
 // Categories
 .categories-section {
-  background: #f8f9fa;
+  background: var(--portal-bg-alt);
 }
 
 .category-card {
@@ -245,7 +245,7 @@
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 12px 32px var(--portal-shadow-hover);
   }
 }
 
@@ -314,7 +314,7 @@
 
 // Why choose us
 .why-section {
-  background: #f8f9fa;
+  background: var(--portal-bg-alt);
 }
 
 .feature-card {
@@ -328,7 +328,7 @@
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 8px 24px var(--portal-shadow);
   }
 }
 

@@ -1,7 +1,19 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import {
+  matchesEmploymentTypeQuery,
+  matchesKeywordQuery,
+  matchesLocationQuery,
+  matchesSalaryRangeQuery,
+} from './job-filter.utils';
+import {
+  getPaginationRange,
+  getVisiblePageNumbers,
+  type PageNumber,
+} from './pagination.utils';
 
 interface JobListing {
   id: string;
@@ -38,6 +50,9 @@ type SortOption = 'newest' | 'oldest' | 'salary-high' | 'salary-low' | 'title';
   styleUrl: './jobs.scss',
 })
 export class Jobs {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
   protected readonly pageSize = 6;
   protected readonly currentPage = signal(1);
   protected readonly viewMode = signal<ViewMode>('grid');
@@ -275,23 +290,16 @@ export class Jobs {
     let jobs = [...this.allJobs];
     const f = this.activeFilters();
 
-    if (f.keyword.trim()) {
-      const keyword = f.keyword.toLowerCase();
-      jobs = jobs.filter(
-        (job) =>
-          job.title.toLowerCase().includes(keyword) ||
-          job.company.toLowerCase().includes(keyword) ||
-          job.skills.some((s) => s.toLowerCase().includes(keyword)),
-      );
+    if (f.keyword) {
+      jobs = jobs.filter((job) => matchesKeywordQuery(job, f.keyword));
     }
 
-    if (f.location.trim()) {
-      const location = f.location.toLowerCase();
-      jobs = jobs.filter((job) => job.location.toLowerCase().includes(location));
+    if (f.location) {
+      jobs = jobs.filter((job) => matchesLocationQuery(job.location, f.location));
     }
 
     if (f.employmentType) {
-      jobs = jobs.filter((job) => job.type === f.employmentType);
+      jobs = jobs.filter((job) => matchesEmploymentTypeQuery(job, f.employmentType));
     }
 
     if (f.experienceLevel) {
@@ -299,7 +307,7 @@ export class Jobs {
     }
 
     if (f.salaryRange) {
-      jobs = jobs.filter((job) => this.matchesSalaryRange(job.salary, f.salaryRange));
+      jobs = jobs.filter((job) => matchesSalaryRangeQuery(job, f.salaryRange));
     }
 
     switch (this.sortBy()) {
@@ -327,30 +335,88 @@ export class Jobs {
   );
 
   protected readonly paginatedJobs = computed(() => {
-    const page = this.currentPage();
+    const jobs = this.filteredJobs();
+    const totalPages = Math.max(1, Math.ceil(jobs.length / this.pageSize));
+    const page = Math.min(Math.max(1, this.currentPage()), totalPages);
     const start = (page - 1) * this.pageSize;
-    return this.filteredJobs().slice(start, start + this.pageSize);
+    return jobs.slice(start, start + this.pageSize);
   });
 
-  protected readonly pageNumbers = computed(() =>
-    Array.from({ length: this.totalPages() }, (_, i) => i + 1),
+  protected readonly visiblePageNumbers = computed((): PageNumber[] =>
+    getVisiblePageNumbers(this.currentPage(), this.totalPages()),
   );
 
+  protected readonly paginationRange = computed(() =>
+    getPaginationRange(this.currentPage(), this.pageSize, this.filteredJobs().length),
+  );
+
+  constructor() {
+    effect(() => {
+      const totalPages = this.totalPages();
+      if (this.currentPage() > totalPages) {
+        this.currentPage.set(totalPages);
+      }
+    });
+
+    this.route.queryParamMap.pipe(takeUntilDestroyed()).subscribe((params) => {
+      const keyword = params.get('keyword')?.trim() ?? '';
+      const location = params.get('location')?.trim() ?? '';
+      const page = this.parsePageParam(params.get('page'));
+
+      const filtersChanged =
+        keyword !== this.filterForm.keyword || location !== this.filterForm.location;
+      const pageChanged = page !== this.currentPage();
+
+      if (!filtersChanged && !pageChanged) {
+        return;
+      }
+
+      if (filtersChanged) {
+        this.filterForm.keyword = keyword;
+        this.filterForm.location = location;
+        this.syncActiveFilters(false);
+      }
+
+      if (pageChanged) {
+        this.currentPage.set(page);
+      }
+    });
+  }
+
   protected applyFilters(): void {
-    this.activeFilters.set({ ...this.filterForm });
-    this.currentPage.set(1);
+    this.syncActiveFilters();
+    this.syncUrlQueryParams();
   }
 
   protected clearFilters(): void {
-    this.filterForm = {
-      keyword: '',
-      location: '',
-      employmentType: '',
-      experienceLevel: '',
-      salaryRange: '',
-    };
-    this.activeFilters.set({ ...this.filterForm });
-    this.currentPage.set(1);
+    this.filterForm.keyword = '';
+    this.filterForm.location = '';
+    this.filterForm.employmentType = '';
+    this.filterForm.experienceLevel = '';
+    this.filterForm.salaryRange = '';
+    this.syncActiveFilters();
+    this.router.navigate(['/jobs'], { replaceUrl: true });
+  }
+
+  private syncActiveFilters(resetPage = true): void {
+    this.activeFilters.set(this.normalizeFilters(this.filterForm));
+
+    if (resetPage) {
+      this.currentPage.set(1);
+    }
+  }
+
+  private syncUrlQueryParams(includePage = true): void {
+    const normalized = this.normalizeFilters(this.filterForm);
+
+    this.router.navigate(['/jobs'], {
+      replaceUrl: true,
+      queryParams: {
+        keyword: normalized.keyword || null,
+        location: normalized.location || null,
+        page: includePage && this.currentPage() > 1 ? this.currentPage() : null,
+      },
+    });
   }
 
   protected setViewMode(mode: ViewMode): void {
@@ -363,9 +429,31 @@ export class Jobs {
   }
 
   protected goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages()) {
-      this.currentPage.set(page);
+    if (page < 1 || page > this.totalPages() || page === this.currentPage()) {
+      return;
     }
+
+    this.currentPage.set(page);
+    this.syncUrlQueryParams();
+    this.scrollToResults();
+  }
+
+  protected isEllipsis(page: PageNumber): page is 'ellipsis-start' | 'ellipsis-end' {
+    return page === 'ellipsis-start' || page === 'ellipsis-end';
+  }
+
+  private parsePageParam(value: string | null): number {
+    const page = Number.parseInt(value ?? '1', 10);
+    return Number.isFinite(page) && page > 0 ? page : 1;
+  }
+
+  private scrollToResults(): void {
+    queueMicrotask(() => {
+      document.getElementById('jobs-results')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    });
   }
 
   protected toggleSaveJob(jobId: string): void {
@@ -384,19 +472,13 @@ export class Jobs {
     return this.savedJobIds().has(jobId);
   }
 
-  private matchesSalaryRange(salary: number, range: string): boolean {
-    const lakhs = salary / 100000;
-    switch (range) {
-      case '0-10':
-        return lakhs <= 10;
-      case '10-20':
-        return lakhs > 10 && lakhs <= 20;
-      case '20-30':
-        return lakhs > 20 && lakhs <= 30;
-      case '30+':
-        return lakhs > 30;
-      default:
-        return true;
-    }
+  private normalizeFilters(filters: JobFilters): JobFilters {
+    return {
+      keyword: (filters.keyword ?? '').trim(),
+      location: (filters.location ?? '').trim(),
+      employmentType: filters.employmentType ?? '',
+      experienceLevel: filters.experienceLevel ?? '',
+      salaryRange: filters.salaryRange ?? '',
+    };
   }
 }

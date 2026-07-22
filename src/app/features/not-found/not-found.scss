@@ -3,19 +3,19 @@
 }
 
 .not-found-page {
-  --nf-primary: #0d6efd;
-  --nf-accent: #6610f2;
-  --nf-text: #1a1a2e;
-  --nf-muted: #6c757d;
-  --nf-surface: #ffffff;
-  --nf-border: #e9ecef;
-  --nf-bg: #f8f9fa;
+  --nf-primary: var(--portal-primary);
+  --nf-accent: var(--portal-accent);
+  --nf-text: var(--portal-text);
+  --nf-muted: var(--portal-muted);
+  --nf-surface: var(--portal-surface);
+  --nf-border: var(--portal-border);
+  --nf-bg: var(--portal-bg);
   display: flex;
   align-items: center;
   min-height: calc(100vh - 8rem);
   padding: 3rem 0 4rem;
   background:
-    linear-gradient(135deg, rgba(13, 110, 253, 0.06) 0%, rgba(102, 16, 242, 0.06) 100%),
+    linear-gradient(135deg, var(--portal-gradient-start) 0%, var(--portal-gradient-end) 100%),
     var(--nf-bg);
 }
 
@@ -27,7 +27,7 @@
   border: 1px solid var(--nf-border);
   border-radius: 1.25rem;
   padding: 2.5rem 2rem 3rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px var(--portal-shadow);
 }
 
 .error-code {

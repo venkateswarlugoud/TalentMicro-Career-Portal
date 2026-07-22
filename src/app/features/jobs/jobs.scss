@@ -3,12 +3,12 @@
 }
 
 .jobs-page {
-  --jobs-primary: #0d6efd;
-  --jobs-text: #1a1a2e;
-  --jobs-muted: #6c757d;
-  --jobs-surface: #ffffff;
-  --jobs-border: #e9ecef;
-  --jobs-bg: #f8f9fa;
+  --jobs-primary: var(--portal-primary);
+  --jobs-text: var(--portal-text);
+  --jobs-muted: var(--portal-muted);
+  --jobs-surface: var(--portal-surface);
+  --jobs-border: var(--portal-border);
+  --jobs-bg: var(--portal-bg);
   background: var(--jobs-bg);
   min-height: 100%;
 }
@@ -78,7 +78,7 @@
 
 .input-group-text {
   background: var(--jobs-bg);
-  border-color: #dee2e6;
+  border-color: var(--portal-border);
 }
 
 .filters-actions {
@@ -197,7 +197,7 @@
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 8px 24px var(--portal-shadow);
   }
 }
 

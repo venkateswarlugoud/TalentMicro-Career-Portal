@@ -138,6 +138,11 @@ export class Home {
   constructor(private readonly router: Router) {}
 
   protected onSearch(): void {
-    this.router.navigate(['/jobs']);
+    this.router.navigate(['/jobs'], {
+      queryParams: {
+        keyword: this.searchKeyword.trim() || null,
+        location: this.searchLocation.trim() || null,
+      },
+    });
   }
 }

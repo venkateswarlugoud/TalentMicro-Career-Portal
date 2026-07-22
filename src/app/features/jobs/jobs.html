@@ -125,7 +125,7 @@
                 class="form-select form-select-sm"
                 [ngModel]="sortBy()"
                 (ngModelChange)="onSortChange($event)"
-                name="sortBy"
+                [ngModelOptions]="{ standalone: true }"
               >
                 @for (option of sortOptions; track option.value) {
                   <option [value]="option.value">{{ option.label }}</option>
@@ -159,7 +159,7 @@
         </div>
 
         <!-- Job Cards -->
-        @if (paginatedJobs().length > 0) {
+        @if (filteredJobs().length > 0) {
           <div
             class="jobs-list"
             [class.jobs-list--grid]="viewMode() === 'grid'"
@@ -268,7 +268,10 @@
           <div class="empty-state text-center">
             <mat-icon class="empty-icon">search_off</mat-icon>
             <h3>No jobs found</h3>
-            <p class="text-muted">Try adjusting your filters to see more results.</p>
+            <p class="text-muted">
+              Try adjusting your filters, checking spelling, or using broader keywords like city
+              name or job title.
+            </p>
             <button type="button" class="btn btn-primary" (click)="clearFilters()">
               Clear Filters
             </button>
