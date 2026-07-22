@@ -279,7 +279,7 @@ Feature-specific pages, each implemented as a standalone component:
 - **Reusable Layout** — Shared header, footer, and layout shell across all pages
 - **Separation of Concerns** — Feature pages, core services, models, constants, and utilities in dedicated folders
 - **Unit Testing** — Vitest specs for filter utilities, pagination helpers, and core services
-- **Type Safety** — Strongly typed models and constants throughout the codebase
+- **Type Safety** — Strongly typed models and constants throughout the codebase.
 
 ---
 
